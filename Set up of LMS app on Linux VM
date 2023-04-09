@@ -1,0 +1,63 @@
+sudo apt install nginx
+sudo systemctl status nginx
+curl -fsSL https://deb.nodesource.com/setup_16.x | sudo -E bash - &&;sudo apt-get install -y nodejs
+node -v
+sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list'
+wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
+sudo apt-get update
+sudo apt-get -y install postgresql
+sudo su postgres
+psql
+/password
+enter new password
+re-enter password
+quit
+exit
+git clone https://github.com/digitaledify/lms-public.git
+git status
+cd lms-public/
+git status
+git branch -r
+git checkout vm-docker-cicd
+cd /etc/nginx/sites-enabled
+sudo rm default
+cd /etc/nginx/sites-available
+sudo vi lms-app
+paste the below content
+server {
+    server_name darisi-devi-tech.store;
+    location / {
+        root /home/ubuntu/lms-public/webapp/dist;
+    }
+    location /api {
+        proxy_pass http://localhost:8080;
+    } 
+ }
+direct domain to current ip-address using DNS settings (in godaddy site)
+cd lms-public/webapp
+npm install
+npm run build
+sudo ln -s /etc/nginx/sites-available/lms-app /etc/nginx/sites-enabled/lms-app
+sudo systemctl restart nginx
+sudo systemctl status nginx
+sudo snap install core; sudo snap refresh core
+sudo snap install --classic certbot
+sudo ln -s /snap/bin/certbot /usr/bin/certbot
+sudo certbot --nginx
+cd lms-public/api/
+npm install
+sudo npm install -g pm2
+sudo vi .env
+paste the below content:
+MODE=production
+PORT=8080
+DATABASE_URL=postgresql://postgres:password@localhost:5432/postgres
+npx prisma db push
+npm run build
+NODE_PORT=8080 pm2 start -i 0 build/index.js
+cd lms-public/webapp
+vi .env
+replace http by https; localhost by darisi-devi-tech.store
+npm install
+npm run build
+verify in the browser using domain name (darisi-devi-tech.store)
