@@ -1,63 +1,92 @@
-sudo apt install nginx
-sudo systemctl status nginx
-curl -fsSL https://deb.nodesource.com/setup_16.x | sudo -E bash - &&;sudo apt-get install -y nodejs
-node -v
-sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list'
-wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
-sudo apt-get update
-sudo apt-get -y install postgresql
-sudo su postgres
-psql
-/password
-enter new password
-re-enter password
-quit
-exit
-git clone https://github.com/digitaledify/lms-public.git
-git status
-cd lms-public/
-git status
-git branch -r
-git checkout vm-docker-cicd
-cd /etc/nginx/sites-enabled
-sudo rm default
-cd /etc/nginx/sites-available
-sudo vi lms-app
-paste the below content
-server {
-    server_name darisi-devi-tech.store;
-    location / {
-        root /home/ubuntu/lms-public/webapp/dist;
-    }
-    location /api {
-        proxy_pass http://localhost:8080;
-    } 
- }
+connect to VM:
+  ssh -i osaka.pem ubuntu@ipaddress
+
+Install nginx and verify status:
+    sudo apt install nginx
+    sudo systemctl status nginx
+
+Install node and verify status:
+    curl -fsSL https://deb.nodesource.com/setup_16.x | sudo -E bash - &&;sudo apt-get install -y nodejs
+    node -v
+
+Install Postgres:
+    sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list'
+    wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
+    sudo apt-get update
+    sudo apt-get -y install postgresql
+    sudo su postgres
+    psql
+    /password
+    enter new password
+    re-enter password
+    quit
+    exit
+    
+clone project code from git and checkout to desired branch:
+    git clone https://github.com/digitaledify/lms-public.git
+    cd lms-public/
+    git status
+    git branch -r
+    git checkout vm-docker-cicd
+
+Remove default file in sites-enabled of etc directory:
+    cd /etc/nginx/sites-enabled
+    sudo rm default
+
+create a new file in sites-available of etc directory and add root directory, api paths:
+    cd /etc/nginx/sites-available
+    sudo vi lms-app
+    paste the below content
+    server {
+        server_name darisi-devi-tech.store;
+        location / {
+            root /home/ubuntu/lms-public/webapp/dist;
+        }
+        location /api {
+            proxy_pass http://localhost:8080;
+        } 
+     }
+     
 direct domain to current ip-address using DNS settings (in godaddy site)
-cd lms-public/webapp
-npm install
-npm run build
-sudo ln -s /etc/nginx/sites-available/lms-app /etc/nginx/sites-enabled/lms-app
-sudo systemctl restart nginx
-sudo systemctl status nginx
-sudo snap install core; sudo snap refresh core
-sudo snap install --classic certbot
-sudo ln -s /snap/bin/certbot /usr/bin/certbot
-sudo certbot --nginx
-cd lms-public/api/
-npm install
-sudo npm install -g pm2
-sudo vi .env
-paste the below content:
-MODE=production
-PORT=8080
-DATABASE_URL=postgresql://postgres:password@localhost:5432/postgres
-npx prisma db push
+
+create dist directory in webapp(FE):
+    cd lms-public/webapp
+    npm install
+    npm run build
+
+create a simulink for sites-enabled from file of sites-available:
+    sudo ln -s /etc/nginx/sites-available/lms-app /etc/nginx/sites-enabled/lms-app
+
+Restart nginx and verify status as we did config. changes:
+    sudo systemctl restart nginx
+    sudo systemctl status nginx
+    
+Install certbot for ssl certificate:
+    sudo snap install core; sudo snap refresh core
+    sudo snap install --classic certbot
+    sudo ln -s /snap/bin/certbot /usr/bin/certbot
+    sudo certbot --nginx
+    
+Create dist directory for api(BE) and also link BE to DB in .env file of api directory:
+    cd lms-public/api/
+    npm install
+    sudo npm install -g pm2
+    sudo vi .env
+    paste the below content:
+    MODE=production
+    PORT=8080
+    DATABASE_URL=postgresql://postgres:password@localhost:5432/postgres
+    
+Get DB ready: 
+    npx prisma db push
+    
 npm run build
 NODE_PORT=8080 pm2 start -i 0 build/index.js
-cd lms-public/webapp
-vi .env
-replace http by https; localhost by darisi-devi-tech.store
-npm install
-npm run build
+
+Connect FE to server in .env file of webapp(FE) using domain-name; and replace http by https:
+    cd lms-public/webapp
+    vi .env
+    replace http by https; localhost by darisi-devi-tech.store
+    npm install
+    npm run build
 verify in the browser using domain name (darisi-devi-tech.store)
