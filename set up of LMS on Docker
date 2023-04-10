@@ -1,0 +1,36 @@
+connect to VM:
+  ssh -i osaka.pem ubuntu@ipaddress
+  
+Install docker as per steps in docs.docker.com
+
+check docker: 
+  docker -v
+  
+git clone https://github.com/digitaledify/lms-public.git
+git status
+cd lms-public/
+git status
+git branch -r
+git checkout vm-docker-cicd
+
+cd lms-public/webapp
+vi .env
+  Replace localhost by server ie.,VM's IP
+docker build --tag lms-web .
+docker run -d -p 80:80 --name lmsfe lms-web
+
+docker network create lmsnetwork
+
+docker run -d -p 5432:5432 --network lmsnetwork -e POSTGRES_PASSWORD=password --name lmspgdb postgres
+
+cd lms-public/api/
+docker build --tag lms-public-api  .
+docker run -d -p 8080:8080 --network lmsnetwork -e DATABASE_URL=postgresql://postgres:password@lmspgdb:5432/postgres -e PORT=8080 -e MODE=local lms-public-api
+
+docker images
+docker ps
+
+check for api function:
+  curl http://localhost:8080/api
+  
+check in the browser with IP address
