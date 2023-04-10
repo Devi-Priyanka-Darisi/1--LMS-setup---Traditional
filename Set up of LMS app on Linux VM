@@ -89,4 +89,5 @@ Connect FE to server in .env file of webapp(FE) using domain-name; and replace h
     replace http by https; localhost by darisi-devi-tech.store
     npm install
     npm run build
+    
 verify in the browser using domain name (darisi-devi-tech.store)
