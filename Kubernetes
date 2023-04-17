@@ -1,0 +1,38 @@
+Install kubernetes:
+    Install docker and run post-installation steps to run as non-root user
+    check docker using docker -v
+    install kubernetes minikube (single node cluster) using  https://minikube.sigs.k8s.io/docs/start/
+     to install kubectl: 
+        sudo snap install kubectl --classic
+    to ensure minikube status:
+        minikube status
+    to start minikube:
+        minikube start
+
+to delete minikube: minikube delete   
+  
+to create a pod:
+    go to desired directory
+    create a .yaml file with APIversion, type, metadata, and specs
+    run the .yaml file using command:
+        kubectl apply -f file_cretaed.yaml
+    this will create the pod
+    To check the pods running:
+        kubectl get pods
+
+kubectl commands with examples:
+1.	kubectl create - Create a resource from a YAML or JSON file
+        kubectl create -f nginx-pod.yaml
+2.	kubectl apply - Create or update a resource from a YAML or JSON file
+3.	kubectl get - Retrieve information about resources in the cluster
+        kubectl get pods nginx-pod
+4.	kubectl describe - Get detailed information about a specific resource
+        kubectl describe pod nginx-pod
+5.	kubectl delete - Delete a resource
+        kubectl delete pod nginx-pod
+6.	kubectl logs - View the logs of a container in a pod
+        kubectl logs nginx-pod -c nginx-container
+7.	kubectl exec - Run a command in a container in a pod
+        kubectl exec -it nginx-pod -c nginx-container -- /bin/bash
+8.	kubectl port-forward - Forward a local port to a port on a pod
+9.	kubectl scale - Change the number of replicas for a deployment or replicaset
