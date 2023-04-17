@@ -25,9 +25,12 @@ kubectl commands with examples:
         kubectl create -f nginx-pod.yaml
 2.	kubectl apply - Create or update a resource from a YAML or JSON file
 3.	kubectl get - Retrieve information about resources in the cluster
+        kubectl get pods
         kubectl get pods nginx-pod
+        kubectl get pods -selector app=App1 
 4.	kubectl describe - Get detailed information about a specific resource
         kubectl describe pod nginx-pod
+        kubectl describe rs nginx-replicaset [here rs stands for replica-set]
 5.	kubectl delete - Delete a resource
         kubectl delete pod nginx-pod
 6.	kubectl logs - View the logs of a container in a pod
@@ -36,3 +39,19 @@ kubectl commands with examples:
         kubectl exec -it nginx-pod -c nginx-container -- /bin/bash
 8.	kubectl port-forward - Forward a local port to a port on a pod
 9.	kubectl scale - Change the number of replicas for a deployment or replicaset
+
+Imperative way of creating object (without yaml files):
+    kubectl run nginx --image nginx
+    
+To check kubernetes API version:
+        kubectl version
+
+based on kubernetes API version and type of object to create, API version in yaml file has to be entered
+
+Yaml files --> case-sensitive
+
+Purpose of replicas or replica-sets in industry:
+    for scaling and load-balancing ie., as number of users increases, there will be a need for more replicas to balance the load
+    for accessing the application without failure ie., if one server goes down, the app shouldn't fail.. it should direct request to other replica
+    
+    
