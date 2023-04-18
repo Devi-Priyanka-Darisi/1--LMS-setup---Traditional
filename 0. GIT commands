@@ -1,0 +1,12 @@
+To save local system changes to git repository using terminal:
+    git init                             [this will initialise empty git repo in current working directory]
+    git status                           [this will return current branch details, any modified files that needs add and commit]
+    git add modified_file_name           [this will save the changes]
+    git commit -m "name_for_changes"     [this will commit changes]
+    git config
+        git config --global user.name "-----"
+        git config --global user.email "-------"
+        git config --list                [this will show git credentials]
+    git branch -r                        [this will list available branches]
+    git checkout desired_branch          [this will take to desired branch]
+    git clone url                        [this will clone the content to the server]
