@@ -54,4 +54,18 @@ Purpose of replicas or replica-sets in industry:
     for scaling and load-balancing ie., as number of users increases, there will be a need for more replicas to balance the load
     for accessing the application without failure ie., if one server goes down, the app shouldn't fail.. it should direct request to other replica
     
-    
+services:
+    cluster-IP      :   for internal communication within cluster   
+    node port       :   not used in production env.
+    load balancer   :   for external communication
+
+procedure to get service url after creating a service:
+    -   create an yaml file for service
+    -   create a service using kubectl command
+    -   minikube service service_name --url     [this will return an url which helps in checking status of service]
+    -   curl url                                [if it returns valid content=> it is success]
+    -   to view the content through chrome using IP, we need to use AKS/EKS
+
+Ingress service -   for ext. traffic routing (ie., domaine name instead of ip-add) and https enabling
+
+Daemon sets -    runs this pod by default on every node and collect info like logs etc. from all pods  and sends info. to main server.
