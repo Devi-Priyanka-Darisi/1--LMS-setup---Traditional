@@ -1,0 +1,39 @@
+connect to server using ssh
+
+clone the code
+
+git checkout to desired branch
+
+download docker and do post-installation to run as non root user
+
+check docker using docker -v
+
+install minikube
+start minikube
+
+install kubectl using command:      sudo snap install kubectl --classic
+
+check for docker images using:      docker images
+
+delete if any images exists using:  docker rmi image_name
+
+delete cache using:                 docker system prune
+
+build docker images:
+  go to webapp directory
+  run:  docker build --tag lms-web .
+  go to api directory
+  run:  docker build --tag lms-public-api-v1
+  
+load docker images to minikube:
+  minikube image load lms-web
+  minikube image load lms-public-api-v1
+  
+to apply all kubernetes yaml files @once:
+  go to directory where k8s folder exists ie., cd lms-public
+  run:  kubectl apply -f k8s/   [this will create all services, deployments]
+  info. related to these deployments and services can be obtained using "kubectl get...", "kubectl descibe...." commands
+  
+to check frontend is running or not, we need service url:
+  minikube service frontend-service --url  [this will return url]
+  curl url                                 [if this return valid content, it is success]
